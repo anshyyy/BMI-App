@@ -11,13 +11,13 @@ class BMICalculator extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        scaffoldBackgroundColor: Color(0xff0A0E21),
+        scaffoldBackgroundColor: const Color(0xff0A0E21),
         textTheme: const TextTheme(bodyText2: TextStyle(color: Colors.white)),
         appBarTheme: const AppBarTheme(
           backgroundColor: Color(0xff0A0E21), //use your hex code here
         ),
       ),
-      home: InputPage(),
+      home: const InputPage(),
     );
   }
 }
