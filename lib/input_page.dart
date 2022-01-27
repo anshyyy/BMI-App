@@ -1,14 +1,15 @@
-// ignore_for_file: prefer_const_constructors
-
+import 'package:bmi/result_page.dart';
 import 'package:flutter/material.dart';
 import 'package:bmi/reuseable_class.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'iconWidget.dart';
 import 'constants.dart';
+import 'result_page.dart';
 
 enum Gender {
   male,
   female,
+  Null,
 }
 
 class InputPage extends StatefulWidget {
@@ -19,26 +20,12 @@ class InputPage extends StatefulWidget {
 }
 
 class _InputPageState extends State<InputPage> {
-  Color maleCardColour = acolour;
-  Color femaleCardColour = acolour;
-  void updateColour(Gender gender) {
-    if (gender == Gender.male) {
-      if (maleCardColour == icolour) {
-        maleCardColour = acolour;
-      } else {
-        maleCardColour = icolour;
-        femaleCardColour = acolour;
-      }
-    } else {
-      if (femaleCardColour == icolour) {
-        femaleCardColour = acolour;
-      } else {
-        femaleCardColour = icolour;
-        maleCardColour = acolour;
-      }
-    }
-  }
-
+  Color maleCardColour = icolour;
+  Color femaleCardColour = icolour;
+  Gender selectedGender = Gender.Null;
+  int height = 180;
+  int weight = 20;
+  int age = 10;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,32 +39,28 @@ class _InputPageState extends State<InputPage> {
             child: Row(
               children: [
                 Expanded(
-                  child: GestureDetector(
-                    onTap: () {
+                  child: ReusableCard(
+                    selectedGender == Gender.male ? icolour : acolour,
+                    () {
                       setState(() {
-                        updateColour(Gender.male);
+                        selectedGender = Gender.male;
                       });
                     },
-                    child: ReusableCard(
-                      maleCardColour,
-                      Icon_widget(
-                        text: "MALE",
-                        icon: FontAwesomeIcons.mars,
-                      ),
+                    Icon_widget(
+                      text: "MALE",
+                      icon: FontAwesomeIcons.mars,
                     ),
                   ),
                 ),
                 Expanded(
-                  child: GestureDetector(
-                    onTap: () {
+                  child: ReusableCard(
+                    selectedGender == Gender.female ? icolour : acolour,
+                    () {
                       setState(() {
-                        updateColour(Gender.female);
+                        selectedGender = Gender.female;
                       });
                     },
-                    child: ReusableCard(
-                      femaleCardColour,
-                      Icon_widget(text: "FEMALE", icon: FontAwesomeIcons.venus),
-                    ),
+                    Icon_widget(text: "FEMALE", icon: FontAwesomeIcons.venus),
                   ),
                 )
               ],
@@ -86,22 +69,50 @@ class _InputPageState extends State<InputPage> {
           Expanded(
             child: ReusableCard(
                 const Color(0xff1D1E33),
+                () {},
                 Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       "HEIGHT",
                       style: label,
                     ),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.baseline,
+                      textBaseline: TextBaseline.alphabetic,
                       children: [
                         Text(
-                          "180",
-                          style: TextStyle(
-                            fontSize: 50,
-                            fontWeight: FontWeight.w900,
-                          ),
+                          height.toString(),
+                          style: kNumberText,
+                        ),
+                        Text(
+                          "cm",
+                          style: label,
                         )
                       ],
+                    ),
+                    SliderTheme(
+                      data: SliderTheme.of(context).copyWith(
+                        thumbColor: Color(0xffeb1555),
+                        overlayColor: Color(0x29eb1555),
+                        inactiveTrackColor: Colors.grey,
+                        activeTrackColor: Color(0xffeb1555),
+                        thumbShape:
+                            RoundSliderThumbShape(enabledThumbRadius: 15),
+                        overlayShape:
+                            RoundSliderOverlayShape(overlayRadius: 30),
+                      ),
+                      child: Slider(
+                          value: height.toDouble(),
+                          min: 120.0,
+                          max: 220.0,
+                          onChanged: (double newValue) {
+                            // print(newValue);
+                            setState(() {
+                              height = newValue.round();
+                            });
+                          }),
                     )
                   ],
                 )),
@@ -109,20 +120,134 @@ class _InputPageState extends State<InputPage> {
           Expanded(
             child: Row(
               children: [
-                Expanded(child: ReusableCard(Color(0xff1D1E33))),
+                Expanded(
+                    child: ReusableCard(
+                        Color(0xff1D1E33),
+                        () {},
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text('WEIGHT', style: label),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.baseline,
+                              textBaseline: TextBaseline.alphabetic,
+                              children: [
+                                Text(
+                                  weight.toString(),
+                                  style: kNumberText,
+                                ),
+                                Text(
+                                  'kg',
+                                  style: label,
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                FloatingActionButton(
+                                  backgroundColor: Color(0xFF4c4f5e),
+                                  child: Icon(Icons.add),
+                                  onPressed: () {
+                                    setState(() {
+                                      weight++;
+                                    });
+                                  },
+                                ),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                FloatingActionButton(
+                                  backgroundColor: Color(0xFF4c4f5e),
+                                  child: Icon(Icons.remove),
+                                  onPressed: () {
+                                    setState(() {
+                                      weight--;
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
+                          ],
+                        ))),
                 Expanded(
                   child: ReusableCard(
-                    const Color(0xff1D1E33),
-                  ),
+                      const Color(0xff1D1E33),
+                      () {},
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('AGE', style: label),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.baseline,
+                            textBaseline: TextBaseline.alphabetic,
+                            children: [
+                              Text(
+                                age.toString(),
+                                style: kNumberText,
+                              ),
+                              Text(
+                                'years',
+                                style: label,
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: 15,
+                              ),
+                              FloatingActionButton(
+                                backgroundColor: Color(0xFF4c4f5e),
+                                child: Icon(Icons.add),
+                                onPressed: () {
+                                  setState(() {
+                                    age++;
+                                  });
+                                },
+                              ),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              FloatingActionButton(
+                                backgroundColor: Color(0xFF4c4f5e),
+                                child: Icon(Icons.remove),
+                                onPressed: () {
+                                  setState(() {
+                                    age--;
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
+                        ],
+                      )),
                 )
               ],
             ),
           ),
-          Container(
-            color: const Color(0xffeb1555),
-            margin: const EdgeInsets.only(top: 10),
-            width: double.infinity,
-            height: 80,
+          GestureDetector(
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => Resultpage()));
+            },
+            child: Container(
+              child: Center(
+                child: Text(
+                  'CALCULATE',
+                  style: klargebutton,
+                ),
+              ),
+              color: const Color(0xffeb1555),
+              margin: const EdgeInsets.only(top: 10),
+              padding: EdgeInsets.only(bottom: 5),
+              width: double.infinity,
+              height: 80,
+            ),
           )
         ],
       ),
