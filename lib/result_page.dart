@@ -4,7 +4,13 @@ import 'constants.dart';
 import 'reuseable_class.dart';
 
 class Resultpage extends StatelessWidget {
-  Resultpage({Key? key}) : super(key: key);
+  Resultpage(
+      {required this.bmiResult,
+      required this.interpretations,
+      required this.resultText});
+  final String bmiResult;
+  final String resultText;
+  final String interpretations;
 
   @override
   Widget build(BuildContext context) {
@@ -14,21 +20,36 @@ class Resultpage extends StatelessWidget {
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Expanded(
               child: Container(
+            padding: EdgeInsets.all(15),
+            alignment: Alignment.bottomLeft,
             child: Text('Your Result ', style: kTitleText),
           )),
           Expanded(
             flex: 5,
             child: ReusableCard(
-                acolour,
-                () {},
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [Text('Normal', style: kResult)],
-                )),
+              acolour,
+              () {},
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(resultText.toUpperCase(), style: kResult),
+                  Text(
+                    bmiResult,
+                    style: kBMItext,
+                  ),
+                  Text(
+                    interpretations,
+                    textAlign: TextAlign.center,
+                    style: kBMIresult,
+                  )
+                ],
+              ),
+            ),
           ),
           GestureDetector(
             onTap: () {

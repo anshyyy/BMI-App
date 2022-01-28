@@ -10,4 +10,10 @@ const kNumberText = TextStyle(
 );
 const klargebutton = TextStyle(fontSize: 25, fontWeight: FontWeight.bold);
 const kTitleText = TextStyle(fontSize: 50, fontWeight: FontWeight.bold);
-const kResult = TextStyle(fontSize:55,fontWeight: FontWeight.bold)
+const kResult = TextStyle(
+    color: Color(0xff24d876), fontSize: 22, fontWeight: FontWeight.bold);
+const kBMItext = TextStyle(fontSize: 100, fontWeight: FontWeight.bold);
+const kBMIresult = TextStyle(
+  fontSize: 22,
+  fontStyle: FontStyle.normal,
+);

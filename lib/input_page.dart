@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'iconWidget.dart';
 import 'constants.dart';
 import 'result_page.dart';
+import 'functionality.dart';
 
 enum Gender {
   male,
@@ -232,8 +233,18 @@ class _InputPageState extends State<InputPage> {
           ),
           GestureDetector(
             onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => Resultpage()));
+              Brain calc = Brain(height: height, weight: weight);
+              String bmi = calc.calculateBmi();
+              String res = calc.getResult();
+              String inter = calc.getInterpretations();
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Resultpage(
+                            bmiResult: bmi,
+                            resultText: res,
+                            interpretations: inter,
+                          )));
             },
             child: Container(
               child: Center(
